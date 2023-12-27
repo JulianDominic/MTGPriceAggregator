@@ -4,6 +4,11 @@ This script gathers the cheapest variant of the card requested.
 
 ## Usage
 
+1. Make sure you have Python installed and added to `PATH`.
+2. Dowload/Clone the repository or just `main.py`.
+3. Download the dependencies `pip install -r requirements.txt`.
+4. Run the script.
+
 ``` bash
 python main.py
 ```
