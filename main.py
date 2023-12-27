@@ -8,7 +8,7 @@ class ScrapeMTG(ABC):
         pass
 
     @staticmethod
-    def get_cheapest_card(cards:list):
+    def get_cheapest_card(cards:list[dict]) -> int:
         if cards is None:
             return None
         prices = dict()
@@ -88,9 +88,9 @@ class OneMTG(ScrapeMTG):
                     continue
                 set_name = set_name[:-1].strip()
                 price = card.select_one('p.productPrice').text.strip()[1:].split()[0]
-                if price == "old":  # would be "varies" but there's the [1:]
+                if price == "old":
                     continue
-                if price == "aries":
+                if price == "aries":  # would be "varies" but there's the [1:]
                     price = card.select_one('div.addNow').text.strip().split('$')[1]
                 try:
                     availability_button = card.select_one('span.addBtn')
@@ -224,9 +224,9 @@ class CardsCitadel(ScrapeMTG):
                     continue
                 set_name = set_name[:-1].strip()
                 price = card.select_one('p.productPrice').text.strip()[1:].split()[0]
-                if price == "old":  # would be "varies" but there's the [1:]
+                if price == "old":
                     continue
-                if price == "aries":
+                if price == "aries":  # would be "varies" but there's the [1:]
                     price = card.select_one('div.addNow').text.strip().split('$')[1]
                 try:
                     availability_button = card.select_one('span.addBtn')
@@ -338,20 +338,16 @@ class Hideout(ScrapeMTG):
 
 def main():
     card_name = input("Name of card: ")
-    gh = GamesHaven(card_name)
-    onemtg = OneMTG(card_name)
-    agora = AgoraHobby(card_name)
-    flagship = FlagshipGames(card_name)
-    cc = CardsCitadel(card_name)
-    gog = GreyOgreGames(card_name)
-    hideout = Hideout(card_name)
-    sites = [gh, onemtg, agora, flagship, cc, gog, hideout]
-    for site in sites:
-        site:ScrapeMTG
-        cards = site.get_card_info(site.status_code)
-        cheapest_idx = site.get_cheapest_card(cards)
+    # Remove AgoraHobby to speed things up. It has the longest loading time.
+    sites = [GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout]
+    instances = [site(card_name) for site in sites]
+
+    for site_instance in instances:
+        site_instance:ScrapeMTG
+        cards = site_instance.get_card_info(site_instance.status_code)
+        cheapest_idx = site_instance.get_cheapest_card(cards)
         if cheapest_idx is None:
-            print(f"\"{card_name}\" is unavailable on {site.__class__.__name__}.")
+            print(f"\"{card_name}\" is unavailable on {site_instance.__class__.__name__}.")
         else:
             print(cards[cheapest_idx])
     return
