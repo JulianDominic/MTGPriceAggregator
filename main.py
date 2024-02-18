@@ -1,4 +1,4 @@
-import requests
+import requests, os
 from bs4 import BeautifulSoup
 from abc import ABC, abstractmethod
 
@@ -337,20 +337,35 @@ class Hideout(ScrapeMTG):
 
 
 def main():
-    card_name = input("Name of card: ")
-    # Remove AgoraHobby to speed things up. It has the longest loading time.
-    sites = [GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout]
-    instances = [site(card_name) for site in sites]
+    main_flag = True
+    while main_flag:
+        card_name = input("Name of card: ")
+        # Remove AgoraHobby to speed things up. It has the longest loading time.
+        sites = [GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout]
+        instances = [site(card_name) for site in sites]
 
-    for site_instance in instances:
-        site_instance:ScrapeMTG
-        cards = site_instance.get_card_info(site_instance.status_code)
-        cheapest_idx = site_instance.get_cheapest_card(cards)
-        if cheapest_idx is None:
-            print(f"\"{card_name}\" is unavailable on {site_instance.__class__.__name__}.")
-        else:
-            print(cards[cheapest_idx])
-    return
+        for site_instance in instances:
+            site_instance:ScrapeMTG
+            cards = site_instance.get_card_info(site_instance.status_code)
+            cheapest_idx = site_instance.get_cheapest_card(cards)
+            if cheapest_idx is None:
+                print(f"\"{card_name}\" is unavailable on {site_instance.__class__.__name__}.")
+            else:
+                print(cards[cheapest_idx])
+        
+        # Check with the user if they want to search for another card
+        end_flag = True
+        while end_flag:
+            end = input("\n\nIs there another card you would like to check? (Y/n) ")
+            if end.lower() in ["y", ""]:
+                # Clear the screen/terminal
+                os.system('cls' if os.name == 'nt' else 'clear')
+                break
+            elif end.lower() == "n":
+                end_flag = False
+                main_flag = False
+            else:
+                print("Invalid option.")
 
 
 if __name__ == "__main__":
