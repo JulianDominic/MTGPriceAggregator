@@ -3,7 +3,7 @@ import { Card, CardContent, Typography } from '@mui/material';
 
 function CardInfo({ card }) {
   return (
-    <Card>
+    <Card sx={{ borderRadius: "1em" }}>
       <CardContent>
         <Typography variant="h6">
           {card.name}
