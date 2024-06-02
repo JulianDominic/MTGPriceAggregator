@@ -20,7 +20,7 @@ The frontend doesn't just search for the cheapest card, it shows all the cards a
 ### Script
 
 1. Make sure you have [Python](https://www.python.org/) installed and added to `PATH`.
-2. Dowload/Clone the repository or just `lgs.py` and `requirements.txt` found in the backend.
+2. Dowload/Clone the repository or just `lgs.py` and `requirements_script.txt` found in the backend.
 3. Download the dependencies `pip install -r requirements_script.txt`.
 4. Run the script.
 
@@ -58,6 +58,6 @@ For example, to find `Chandra's Ignition`, it cannot be `Chandras Ignition` -- t
 
 I intend to add the following functionality:
 
-1. Make the cards in the frontend clickable so that it redirects to the query page (not the specific card).
+1. ~~Make the cards in the frontend clickable so that it redirects to the query page (not the specific card).~~ ✔️
 2. Add a button to export a `csv` based on the cards chosen. It should contain (card name, store, price, link to query).
-3. Add the query link to the script output if it doesn't look too ugly.
+3. ~~Add the query link to the script output if it doesn't look too ugly.~~ ✔️
