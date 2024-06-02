@@ -62,7 +62,10 @@ class GamesHaven(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
 
 
 class OneMTG(ScrapeMTG):
@@ -110,7 +113,10 @@ class OneMTG(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
 
 
 class AgoraHobby(ScrapeMTG):
@@ -154,7 +160,10 @@ class AgoraHobby(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
     
 
 class FlagshipGames(ScrapeMTG):
@@ -198,7 +207,10 @@ class FlagshipGames(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
     
 
 class CardsCitadel(ScrapeMTG):
@@ -246,7 +258,10 @@ class CardsCitadel(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
     
 
 class GreyOgreGames(ScrapeMTG):
@@ -289,7 +304,10 @@ class GreyOgreGames(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
 
 
 class Hideout(ScrapeMTG):
@@ -333,7 +351,10 @@ class Hideout(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return cards
+        return {
+            "url": self.url,
+            "cards": cards,
+        }
 
 
 def main():
