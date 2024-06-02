@@ -130,8 +130,8 @@ function App() {
                 onChange={handleSort}
                 label="Sort by Price"
               >
-                <MenuItem value="asc">Ascending</MenuItem>
-                <MenuItem value="desc">Descending</MenuItem>
+                <MenuItem value="asc">Low to High</MenuItem>
+                <MenuItem value="desc">High to Low</MenuItem>
               </Select>
             </FormControl>
           </Grid>
