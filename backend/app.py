@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict
-from lgs import GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout
+from lgs import GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout, ScrapeMTG
 
 class CardRequest(BaseModel):
     cardName: str
@@ -41,16 +41,23 @@ async def search_card(card_request: CardRequest):
 
     instances = [store_mapping[store](card_name) for store in selected_stores]
 
-    all_cards = []
+    response = {}
     for site_instance in instances:
-        cards = site_instance.get_card_info(site_instance.status_code)
-        if cards:
-            all_cards.extend(cards)
-    
-    if not all_cards:
+        site_instance:ScrapeMTG
+        results:dict = site_instance.get_card_info(site_instance.status_code)
+        if results is not None:
+            query_url = results["url"]
+            cards = results["cards"]
+            if cards:
+                response[site_instance.__name__] = {
+                    "url": query_url,
+                    "cards": cards,
+                }
+
+    if not response:
         raise HTTPException(status_code=404, detail="No cards found")
 
-    return all_cards
+    return response
 
 if __name__ == '__main__':
     import uvicorn
