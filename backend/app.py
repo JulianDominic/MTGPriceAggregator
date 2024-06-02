@@ -28,7 +28,7 @@ store_mapping = {
     "Hideout": Hideout
 }
 
-@app.post("/search", response_model=List[Dict[str, str]])
+@app.post("/search", response_model=List[Dict[str, str | List[Dict[str, str]]]])
 async def search_card(card_request: CardRequest):
     card_name = card_request.cardName
     selected_stores = card_request.stores
@@ -41,23 +41,17 @@ async def search_card(card_request: CardRequest):
 
     instances = [store_mapping[store](card_name) for store in selected_stores]
 
-    response = {}
+    all_cards = []
     for site_instance in instances:
         site_instance:ScrapeMTG
-        results:dict = site_instance.get_card_info(site_instance.status_code)
-        if results is not None:
-            query_url = results["url"]
-            cards = results["cards"]
-            if cards:
-                response[site_instance.__name__] = {
-                    "url": query_url,
-                    "cards": cards,
-                }
+        cards = site_instance.get_card_info(site_instance.status_code)
+        if cards is not None:
+            all_cards.extend(cards)
 
-    if not response:
+    if not all_cards:
         raise HTTPException(status_code=404, detail="No cards found")
 
-    return response
+    return all_cards
 
 if __name__ == '__main__':
     import uvicorn
