@@ -55,7 +55,8 @@ class GamesHaven(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "GamesHaven"
+                        "store": "GamesHaven",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -65,10 +66,7 @@ class GamesHaven(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
 
 
 class OneMTG(ScrapeMTG):
@@ -109,7 +107,8 @@ class OneMTG(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "OneMTG"
+                        "store": "OneMTG",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -119,10 +118,7 @@ class OneMTG(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
 
 
 class AgoraHobby(ScrapeMTG):
@@ -159,7 +155,8 @@ class AgoraHobby(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "Agora"
+                        "store": "Agora",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -169,10 +166,7 @@ class AgoraHobby(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
     
 
 class FlagshipGames(ScrapeMTG):
@@ -209,7 +203,8 @@ class FlagshipGames(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "FlagshipGames"
+                        "store": "FlagshipGames",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -219,11 +214,7 @@ class FlagshipGames(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
-    
+        return cards
 
 class CardsCitadel(ScrapeMTG):
     def __init__(self, card_name:str):
@@ -263,7 +254,8 @@ class CardsCitadel(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "CardsCitadel"
+                        "store": "CardsCitadel",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -273,10 +265,7 @@ class CardsCitadel(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
     
 
 class GreyOgreGames(ScrapeMTG):
@@ -312,7 +301,8 @@ class GreyOgreGames(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "GreyOgreGames"
+                        "store": "GreyOgreGames",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -322,10 +312,7 @@ class GreyOgreGames(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
 
 
 class Hideout(ScrapeMTG):
@@ -362,7 +349,8 @@ class Hideout(ScrapeMTG):
                         "name": name,
                         "set_name": set_name,
                         "price": price,
-                        "store": "Hideout"
+                        "store": "Hideout",
+                        "url": self.url,
                     }
                     cards.append(card_info)
                 except:
@@ -372,10 +360,7 @@ class Hideout(ScrapeMTG):
         else:
             print(f"Failed to retrieve the page. Status code: {self.response.status_code}")
             return None
-        return {
-            "url": self.url,
-            "cards": cards,
-        }
+        return cards
 
 
 def main():
@@ -388,9 +373,8 @@ def main():
 
         for site_instance in instances:
             site_instance:ScrapeMTG
-            result = site_instance.get_card_info(site_instance.status_code)
-            if result is not None:
-                cards = result["cards"]
+            cards = site_instance.get_card_info(site_instance.status_code)
+            if cards is not None:
                 cheapest_idx = site_instance.get_cheapest_card(cards)
                 if cheapest_idx is None:
                     print(f"\"{card_name}\" is unavailable on {site_instance.__class__.__name__}.")
