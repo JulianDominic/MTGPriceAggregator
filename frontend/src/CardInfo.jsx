@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Button } from '@mui/material';
 
 function CardInfo({ card }) {
   return (
@@ -17,6 +17,12 @@ function CardInfo({ card }) {
         <Typography variant="body2" color="textSecondary">
           Store: {card.store}
         </Typography>
+        <Button 
+          onClick={() => window.open(card.url)}
+          variant="contained"
+        >
+          Shop
+        </Button>
       </CardContent>
     </Card>
   );
