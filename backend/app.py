@@ -28,7 +28,7 @@ store_mapping = {
     "Hideout": Hideout
 }
 
-@app.post("/search", response_model=List[Dict[str, str | List[Dict[str, str]]]])
+@app.post("/search", response_model=List[Dict[str, str]])
 async def search_card(card_request: CardRequest):
     card_name = card_request.cardName
     selected_stores = card_request.stores
