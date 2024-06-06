@@ -5,3 +5,6 @@ __pycache__
 
 # virtual environment
 .venv
+
+# scripts
+use_script.sh
