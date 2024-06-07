@@ -1,16 +1,30 @@
 services:
-  backend:
-    container_name: MTG-Backend
-    build:
-      dockerfile: ./backend/Dockerfile
-    ports:
-      - "YOUR_IP:10016:10016"
-    restart: always
-
   frontend:
-    container_name: MTG-Frontend
+    container_name: MTGPA-Frontend
     build:
       dockerfile: ./frontend/Dockerfile
     ports:
       - "YOUR_IP:10015:10015"
+    networks:
+      MTPA:
+        - 172.20.0.2
     restart: always
+
+  backend:
+    container_name: MTGPA-Backend
+    build:
+      dockerfile: ./backend/Dockerfile
+    ports:
+      - "YOUR_IP:10016:10016"
+    networks:
+      MTPA:
+        - 172.20.0.3
+    restart: always
+
+networks:
+  MTGPA:
+    name: MTGPA
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
