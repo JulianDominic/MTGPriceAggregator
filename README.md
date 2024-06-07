@@ -36,8 +36,9 @@ For a start, download/clone the repository.
 
 1. Make sure you have [Docker](https://www.docker.com/) installed.
 2. Replace all instances of `YOUR_IP` in `docker-compose.yml` with the IP of the host machine/server you plan on running the web app on.
-3. Simply run `docker compose up -d`.
-4. The frontend will be accessible via `http://YOUR_IP:10015/`.
+3. Similarly, replace `localhost` in `frontend/src/App.jsx`'s POST request with the IP used in step 2.
+4. Simply run `docker compose up -d`.
+5. The frontend will be accessible via `http://YOUR_IP:10015/`.
 
 #### Manual
 
