@@ -12,7 +12,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["localhost"],
     allow_credentials=True,
     allow_methods=["POST"],
     allow_headers=["*"],
@@ -55,4 +55,5 @@ async def search_card(card_request: CardRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host="YOUR_IP", port=10016)
+    # This line only matters if you are doing `python app.py`
+    uvicorn.run(app, host="0.0.0.0", port=10016)
