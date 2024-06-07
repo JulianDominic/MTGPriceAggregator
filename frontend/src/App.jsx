@@ -55,7 +55,7 @@ function App() {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('http://localhost:8000/search', {
+      const response = await axios.post('http://YOUR_IP:10016/search', {
         cardName,
         stores: selectedStoreKeys
       });

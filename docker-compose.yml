@@ -4,7 +4,7 @@ services:
     build:
       dockerfile: ./backend/Dockerfile
     ports:
-      - "127.0.0.1:8000:8000"
+      - "YOUR_IP:10016:10016"
     restart: always
 
   frontend:
@@ -12,5 +12,5 @@ services:
     build:
       dockerfile: ./frontend/Dockerfile
     ports:
-      - "192.168.50.142:10015:10015"
+      - "YOUR_IP:10015:10015"
     restart: always

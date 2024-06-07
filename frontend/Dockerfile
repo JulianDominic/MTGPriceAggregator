@@ -4,10 +4,10 @@ WORKDIR /frontend
 
 ENV PATH /frontend/node_modules/.bin:$PATH
 
-COPY package.json ./
-COPY package-lock.json ./
+COPY /frontend/package.json ./
+COPY /frontend/package-lock.json ./
 RUN npm ci
 
-COPY . ./
+COPY /frontend ./
 
 CMD ["npm", "run", "dev"]
