@@ -32,14 +32,23 @@ python lgs.py
 
 For a start, download/clone the repository.
 
-#### Backend
+#### Docker
+
+1. Make sure you have [Docker](https://www.docker.com/) installed.
+2. Replace all instances of `YOUR_IP` in `docker-compose.yml` with the IP of the host machine/server you plan on running the web app on.
+3. Simply run `docker compose up -d`.
+4. The frontend will be accessible via `http://YOUR_IP:10015/`.
+
+#### Manual
+
+##### Backend
 
 1. Make sure you have [Python](https://www.python.org/) installed.
 2. Set your working directory to the backend `cd /path/to/backend`.
 3. Download the dependencies `pip install -r requirements_app.txt`.
 4. Run the backend `uvicorn app:app --reload`.
 
-#### Frontend
+##### Frontend
 
 1. Make sure you have [`npm`](https://www.npmjs.com/) installed.
 2. Set your working directory to the frontend `cd /path/to/frontend`.
