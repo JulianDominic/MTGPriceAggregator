@@ -1,5 +1,18 @@
 # MTG Price Aggregator
 
+## Table of Contents
+- [MTG Price Aggregator](#mtg-price-aggregator)
+  - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
+    - [Script](#script)
+    - [Full Web Application](#full-web-application)
+      - [Docker](#docker)
+      - [Manual](#manual)
+        - [Backend](#backend)
+        - [Frontend](#frontend)
+  - [Things to Take Note Of](#things-to-take-note-of)
+  - [Future Updates](#future-updates)
+
 Most recently, I have been learning fullstack development, and I decided to make this into a full web application.
 
 This repository is split into two main sections:
