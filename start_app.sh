@@ -7,7 +7,7 @@ handle_error() {
 
 # Start the FastAPI server
 cd backend || handle_error
-.venv/bin/python -m uvicorn app:app &
+.venv/bin/python -m uvicorn app:app --host 0.0.0.0 --port 10016 &
 
 # Start Vite
 cd ../frontend || handle_error
