@@ -1,3 +1,11 @@
+networks:
+  MTGPA:
+    name: MTGPA
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
+
 services:
   frontend:
     container_name: MTGPA-Frontend
@@ -6,8 +14,8 @@ services:
     ports:
       - "YOUR_IP:10015:10015"
     networks:
-      MTPA:
-        - 172.20.0.2
+      MTGPA:
+        ipv4_address: 172.20.0.2
     restart: always
 
   backend:
@@ -17,14 +25,6 @@ services:
     ports:
       - "YOUR_IP:10016:10016"
     networks:
-      MTPA:
-        - 172.20.0.3
+      MTGPA:
+        ipv4_address: 172.20.0.3
     restart: always
-
-networks:
-  MTGPA:
-    name: MTGPA
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
-          gateway: 172.20.0.1
