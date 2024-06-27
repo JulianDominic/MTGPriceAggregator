@@ -1,3 +1,5 @@
+import aiohttp
+import asyncio
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -14,9 +16,12 @@ origins = [
     "localhost", "http://localhost", "http://localhost:10015"
 ]
 
+origins_regex = "http://192\.168\.*\.*"
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_origin_regex=origins_regex,
     allow_credentials=True,
     allow_methods=["POST"],
     allow_headers=["*"],
@@ -45,12 +50,22 @@ async def search_card(card_request: CardRequest):
 
     instances = [store_mapping[store](card_name) for store in selected_stores]
 
+    async def get_cards(client, site_instance:ScrapeMTG):
+        print("Fetching for", site_instance.__class__.__name__)
+        success = await site_instance.fetch(client)
+        print("Finished fetching for", site_instance.__class__.__name__)
+        if not(success):
+            return None
+        return await site_instance.get_card_info()
+    
+    async with aiohttp.ClientSession() as client:
+        all_store_cards = [get_cards(client, site_instance) for site_instance in instances]
+        results = await asyncio.gather(*all_store_cards)
+    
     all_cards = []
-    for site_instance in instances:
-        site_instance:ScrapeMTG
-        cards = site_instance.get_card_info(site_instance.status_code)
-        if cards is not None:
-            all_cards.extend(cards)
+    for result in results:
+        if result is not None:
+            all_cards.extend(result)
 
     if not all_cards:
         raise HTTPException(status_code=404, detail="No cards found")
