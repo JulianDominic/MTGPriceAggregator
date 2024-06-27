@@ -16,7 +16,7 @@ origins = [
     "localhost", "http://localhost", "http://localhost:10015"
 ]
 
-origins_regex = "http://192\.168\.*\.*"
+origins_regex = "http://192.168.*.*"
 
 app.add_middleware(
     CORSMiddleware,
