@@ -94,7 +94,7 @@ function App() {
         value={cardName}
         // For mobile users, their apostrophe (or single quote) 
         // is NOT the straight one that the websites use
-        onChange={(e) => setCardName(e.target.value.replace("‘", "'"))}
+        onChange={(e) => setCardName(e.target.value.replace(/[’‘]/g, "'"))}
         fullWidth
         margin="normal"
         error={!cardName && error === 'Card name is required'}
