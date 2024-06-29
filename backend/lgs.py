@@ -79,7 +79,7 @@ class GamesHaven(ScrapeMTG):
 class OneMTG(ScrapeMTG):
     def __init__(self, card_name:str):
         self.card_name = card_name
-        self.url = f"https://onemtg.com.sg/search?q=*{self.card_name}*"
+        self.url = f"https://onemtg.com.sg/search?type=product&options%5Bprefix%5D=last&q=*{self.card_name}*"
 
     async def fetch(self, client:aiohttp.ClientSession):
         async with client.get(self.url) as response:
@@ -93,23 +93,23 @@ class OneMTG(ScrapeMTG):
 
     async def get_card_info(self):
         soup = BeautifulSoup(self.html_data, 'html.parser')
-
-        card_divs = soup.select('div.col-lg-9 div.product.Norm')
+        
+        card_divs = soup.select("div.product-description")
         cards = []
         for card in card_divs:
             try:
-                name = card.select_one('p.productTitle').text.strip()
+                name = card.select_one("div.product-detail div.grid-view-item__title").text.strip()
+                # Card Name (AA/Showcase/etc) [SET NAME]
                 name, set_name = [i.strip() for i in name.split('[')]
                 if name.split('(')[0].lower().strip() != self.card_name.lower().strip():
                     continue
                 set_name = set_name[:-1].strip()
-                price = card.select_one('p.productPrice').text.strip()[1:].split()[0]
-                if price == "old":
-                    continue
-                if price == "aries":  # would be "varies" but there's the [1:]
-                    price = card.select_one('div.addNow').text.strip().split('$')[1]
+                # $xx.yy -> xx.yy
+                price = card.select_one('span.product-price__price').text.strip()[1:]
                 try:
-                    availability_button = card.select_one('span.addBtn')
+                    # If not able to buy, it will have a.sold-out
+                    # but all able to buy has a.nm-addToCart
+                    availability_button = card.select_one('form.add-to-cart div.product-form__item--submit a.nm-addToCart')
                     if availability_button is None:
                         break
                 except AttributeError:
