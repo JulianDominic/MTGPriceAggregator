@@ -328,7 +328,7 @@ class GreyOgreGames(ScrapeMTG):
 
 
 class Hideout(ScrapeMTG):
-    def __init__(self, card_name):
+    def __init__(self, card_name:str):
         self.card_name = card_name
         self.url = f"https://hideoutcg.com/search?page=1&q=*{card_name}*"
 
@@ -345,18 +345,18 @@ class Hideout(ScrapeMTG):
     async def get_card_info(self):
         soup = BeautifulSoup(self.html_data, 'html.parser')
 
-        card_divs = soup.select('div.list-view-items.products-display div.product-card-list2')
+        card_divs = soup.select('div.productCard__card')
         cards = []
         for card in card_divs:
             try:
-                name = card.select_one('div.product-detail').text.strip()
-                name, set_name = [i.strip() for i in name.split('[')]
+                name = card.select_one('div.productCard__lower p.productCard__title').text.strip()
+                set_name = card.select_one('div.productCard__lower p.productCard__setName').text.strip()
                 if name.split('(')[0].lower().strip() != self.card_name.lower().strip():
                     continue
-                set_name = set_name[:-1].strip()
-                price = card.select_one('span.product-price__price.is-bold.qv-regularprice').text.strip()[1:]
+                # $xx.yy CURRENCY -> xx.yy
+                price = card.select_one('div.productCard__lower p.productCard__price').text.strip()[1:].split(' ')[0]
                 try:
-                    availability_button = card.select_one('a.nm-addToCart.addToCart.enable.btn')
+                    availability_button = card.select_one('div.productCard__card form button')
                     if availability_button is None:
                         break
                 except AttributeError:
