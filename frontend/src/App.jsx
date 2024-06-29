@@ -92,7 +92,9 @@ function App() {
       <TextField
         label="Card Name"
         value={cardName}
-        onChange={(e) => setCardName(e.target.value)}
+        // For mobile users, their apostrophe (or single quote) 
+        // is NOT the straight one that the websites use
+        onChange={(e) => setCardName(e.target.value.replace("‘", "'"))}
         fullWidth
         margin="normal"
         error={!cardName && error === 'Card name is required'}
