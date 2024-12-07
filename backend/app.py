@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict
-from lgs import GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout, ScrapeMTG
+from lgs import GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout, ScrapeMTG, MTGAsia
 
 class CardRequest(BaseModel):
     cardName: str
@@ -34,7 +34,8 @@ store_mapping = {
     "FlagshipGames": FlagshipGames,
     "CardsCitadel": CardsCitadel,
     "GreyOgreGames": GreyOgreGames,
-    "Hideout": Hideout
+    "Hideout": Hideout,
+    "MTGAsia": MTGAsia
 }
 
 @app.post("/search", response_model=List[Dict[str, str]])
