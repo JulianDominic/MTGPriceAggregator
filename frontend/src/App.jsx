@@ -13,8 +13,10 @@ const intialSelection = stores.reduce((acc, store) => {
   acc[store] = true;
   return acc;
 }, {});
+// FastAPI Backend Endpoint
+const endpoint = "http://localhost:10016/search"
 
-function Test() {
+function App() {
   const [cardName, setCardName] = useState('');
   const [selectedStores, setSelectedStores] = useState(intialSelection);
   const [error, setError] = useState([false, ""]);
@@ -42,7 +44,7 @@ function Test() {
         }}
       >
         <SearchBar cardName={cardName} setCardName={setCardName} error={error} />
-        <SearchButton cardName={cardName} stores={selectedStores} setError={setError} setCards={setCards} />
+        <SearchButton cardName={cardName} stores={selectedStores} setError={setError} setCards={setCards} endpoint={endpoint} />
       </Container>
       <Container>
         <StoreSelection stores={stores} selectedStores={selectedStores} setSelectedStores={setSelectedStores} />
@@ -55,4 +57,4 @@ function Test() {
   );
 }
 
-export default Test;
+export default App;

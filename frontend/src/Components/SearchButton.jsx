@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import axios from 'axios';
 
-function SearchButton({ cardName, stores, setError, setCards }) {
+function SearchButton({ cardName, stores, setError, setCards, endpoint }) {
   const [loading, setLoading] = useState(false);
   const checkStores = () => {
     for (const key in stores) {
@@ -35,7 +35,7 @@ function SearchButton({ cardName, stores, setError, setCards }) {
     // Start the search
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:10016/search', {
+      const response = await axios.post(endpoint, {
         cardName,
         stores: selectedStores
       });
