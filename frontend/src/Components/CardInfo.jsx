@@ -5,7 +5,7 @@ function CardInfo({ card }) {
   return (
     <Card sx={{
       borderRadius: "0.5em",
-      height: "240px",
+      height: "auto", // I wanted all the cards to be same size but some card names break this
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between"
@@ -13,7 +13,7 @@ function CardInfo({ card }) {
       <CardHeader
         title={card.name}
         sx={{
-          height: "97px"
+          height: "auto" // I wanted all the cards to be same size but some card names break this
         }}
       />
       <CardContent sx={{
