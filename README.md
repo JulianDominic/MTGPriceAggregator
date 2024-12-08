@@ -1,86 +1,77 @@
 # MTG Price Aggregator
-
-## Table of Contents
 - [MTG Price Aggregator](#mtg-price-aggregator)
-  - [Table of Contents](#table-of-contents)
   - [Usage](#usage)
-    - [Script](#script)
-    - [Full Web Application](#full-web-application)
+    - [Web App](#web-app)
+    - [Python Script](#python-script)
+    - [Take Note](#take-note)
+  - [Installation](#installation)
+    - [Web App](#web-app-1)
       - [Docker](#docker)
       - [Manual](#manual)
-        - [Backend](#backend)
-        - [Frontend](#frontend)
-  - [Things to Take Note Of](#things-to-take-note-of)
-  - [Future Updates](#future-updates)
-
-Most recently, I have been learning fullstack development, and I decided to make this into a full web application.
-
-This repository is split into two main sections:
-
-1. Backend
-2. Frontend
-
-The backend contains `lgs.py` which is a script that sufficient to start searching for the cheapest card.
-
-On the other hand, `app.py` is my [FastAPI](https://fastapi.tiangolo.com/) server.
-
-The frontend uses [React](https://react.dev/?uwu=true) and [MUI](https://mui.com/).
-
-The frontend doesn't just search for the cheapest card, it shows all the cards available, and you are able to sort by price instead.
+    - [Script](#script)
+  - [Background](#background)
+  - [Roadmap](#roadmap)
 
 ## Usage
 
-### Script
+### Web App
 
-1. Make sure you have [Python](https://www.python.org/) installed and added to `PATH`.
-2. Dowload/Clone the repository or just `lgs.py` and `requirements_script.txt` found in the backend.
-3. Download the dependencies `pip install -r requirements_script.txt`.
-4. Run the script.
+Type the MTG card you want to search, select the stores that you want to buy from, and click search. It will give you a list of all of the available cards.
 
-``` bash
-python lgs.py
-```
+![alt text](images/sample.png)
 
-### Full Web Application
+### Python Script
 
-For a start, download/clone the repository.
+Type the MTG card you want to search, and it will search ALL of the stores. It will give you the price of the cheapest card from each store.
+
+### Take Note
+
+1. You need to type the card's name exactly as it is but it is NOT case-sensitive. This means that for `Chandra's Ignition`, it must include the apostrophe so `Chandras Ignition` will NOT work. `chandra's ignition` and its variants work.
+2. For double-sided/room cards, you must include the `//` and the spaces if you're searching for both rooms at the same time. For example, `unholy annex // ritual chamber` works but `unholy annex//ritual chamber` does NOT work. Searching for just `unholy annex` and `ritual chamber` will work fine.
+
+## Installation
+
+### Web App
+
+Tech Stack: BS4, FastAPI, React, Material UI, Docker (optional)
+
+This app was made to be run on your localhost, so change all of the necessary endpoints if running elsewhere.
 
 #### Docker
 
-1. Make sure you have [Docker](https://www.docker.com/) installed.
-2. Replace all instances of `YOUR_IP` in `docker-compose.yml` with the IP of the host machine/server you plan on running the web app on.
-3. Similarly, replace `localhost` in `frontend/src/App.jsx`'s POST request with the IP used in step 2.
-4. Simply run `docker compose up -d`.
-5. The frontend will be accessible via `http://YOUR_IP:10015/`.
+1. Docker must be installed
+2. Clone/Download the repository
+3. Install the dependencies; Backend: `cd backend && pip install -r requirements_app.txt`. Frontend: `cd frontend && npm install`
+4. Change `localhost` found in `frontend/src/App.jsx` to the host machine's IP, if applicable.
+5. Change all instances of `YOUR_IP` found in `docker-compose.yml` to the host machine's IP.
+6. At the root directory, run `docker compose build --no-cache && docker compose up -d`
+7. Access the frontend at `http://YOUR_IP:10015/`
 
 #### Manual
 
-##### Backend
+1. Clone/Download the repository
+2. Install the dependencies; Backend: `cd backend && pip install -r requirements_app.txt`. Frontend: `cd frontend && npm install`
+3. Change `localhost` found in `frontend/src/App.jsx` to the host machine's IP, if applicable.
+4. Start the backend: `uvicorn app:app --reload`
+5. Start the frontend: `npm run dev`
 
-1. Make sure you have [Python](https://www.python.org/) installed.
-2. Set your working directory to the backend `cd /path/to/backend`.
-3. Download the dependencies `pip install -r requirements_app.txt`.
-4. Run the backend `uvicorn app:app --reload`.
+### Script
 
-##### Frontend
+Tech Stack: BS4
 
-1. Make sure you have [`npm`](https://www.npmjs.com/) installed.
-2. Set your working directory to the frontend `cd /path/to/frontend`.
-3. Download the node modules `npm install`.
-4. Run the frontend `npm run dev`.
+1. Python must be installed and added to PATH.
+2. Clone/Download the repository OR just `backend/lgs.py`, `backend/script.py`, and `backend/requirements_script.txt`.
+3. Install the dependencies by running `pip install -r requirements_script.txt`
+4. Run the script
 
-## Things to Take Note Of
+## Background
 
-> Tip: Agora has some really slow processing. Remove it to speed things up!
+This is my first actual full-stack web application. I saw that there was no way for me to get the best deals easily, so I created this to help me and it works like a charm.
 
-Do note that card name needs to have the correct spelling, and spelt exactly the same as the card. The script and web app are not case-sensitive.
+## Roadmap
 
-For example, to find `Chandra's Ignition`, it cannot be `Chandras Ignition` -- the apostrophe is important.
-
-## Future Updates
-
-I intend to add the following functionality:
-
-1. ~~Make the cards in the frontend clickable so that it redirects to the query page (not the specific card).~~ ✔️
-2. Add a button to export a `csv` based on the cards chosen. It should contain (card name, store, price, link to query).
-3. ~~Add the query link to the script output if it doesn't look too ugly.~~ ✔️
+- [x] Make the cards in the frontend clickable so that it redirects to the query page (not the specific card). 
+- [x] Add the query link to the script output if it doesn't look too ugly.
+- [ ] Add a button to export a csv based on the cards chosen. It should contain (card name, store, price, link to query).
+- [ ] Find a better way to add the host machine's IP for the web app.
+- [ ] Improve the design???
