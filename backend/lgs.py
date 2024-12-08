@@ -32,7 +32,7 @@ class ScrapeMTG(ABC):
             prices[float(price)] = idx
         lowest_idx = prices[min([i for i in prices.keys()])]
         return lowest_idx
-
+    
     async def fetch(self, client:aiohttp.ClientSession) -> bool:
         async with client.get(self.url) as response:
             self.status_code = response.status
@@ -41,6 +41,17 @@ class ScrapeMTG(ABC):
                 return True
             print(f"Failed to retrieve the page. Status code: {self.status_code}")
             return False
+        
+    def valid_card_name(self, possible_name:str) -> bool:
+        # Validate the card name by checking if it's a subset
+        # I tried zip(...) but it wouldn't work for a Room card (xx // yy)
+        #   it would have worked if you searched xx but not yy
+        # Subsets seem to be the only one that supports both right now.
+        original_card = set(self.card_name.lower().split())
+        possible_name = set(possible_name.lower().split())
+        if len(original_card) > len(possible_name):
+            return False
+        return original_card.issubset(possible_name)
     
     def get_card_name(self, lgs_card:element.Tag=None, name_div:str=None) -> str:
         name = lgs_card.select_one(name_div)
@@ -58,10 +69,12 @@ class ScrapeMTG(ABC):
             # Skip non-English cards
             if name.split()[0].startswith(('[', '【')):
                 return ""
+        name = name.strip()
         # Check if the name is correct
-        if self.card_name[0].lower() != name[0].lower():
+        if not self.valid_card_name(name):
             return ""
-        return name.strip()
+
+        return name
     
     def get_set_name(self, lgs_card:element.Tag=None, set_name_div:str=None) -> str:
         set_name = lgs_card.select_one(set_name_div)
