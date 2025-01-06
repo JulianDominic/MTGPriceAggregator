@@ -143,11 +143,13 @@ class GamesHaven(ScrapeMTG):
         card_divs = soup.select("div.productCard__card")
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "button.button--primary")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "p.productCard__title")
             set_name = self.get_set_name(card, "p.productCard__setName")
             price = self.get_price(card, "p.productCard__price")
-            is_avail = self.get_availability(card, "button.button--primary")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -171,11 +173,13 @@ class OneMTG(ScrapeMTG):
         card_divs = soup.select("div.product-description")
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "a.nm-addToCart")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "div.product-detail div.grid-view-item__title")
             set_name = self.get_set_name(card, "div.product-detail div.grid-view-item__title")
             price = self.get_price(card, "span.product-price__price")
-            is_avail = self.get_availability(card, "a.nm-addToCart")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -199,11 +203,13 @@ class AgoraHobby(ScrapeMTG):
         card_divs = soup.select('div#store_listingcontainer div.store-item')
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "input.addtocart")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "div.store-item-title")
             set_name = self.get_set_name(card, "div.store-item-cat")
             price = self.get_price(card, "div.store-item-price")
-            is_avail = self.get_availability(card, "input.addtocart")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -227,11 +233,13 @@ class FlagshipGames(ScrapeMTG):
         card_divs = soup.select('div.list-view-items.products-display div.product-card-list2')
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "a.nm-addToCart")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "div.product-detail")
             set_name = self.get_set_name(card, "div.product-detail")
             price = self.get_price(card, "span.product-price__price.is-bold.qv-regularprice")
-            is_avail = self.get_availability(card, "a.nm-addToCart")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -255,11 +263,13 @@ class CardsCitadel(ScrapeMTG):
         card_divs = soup.select('div.col-lg-9 div.product.Norm')
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "span.addBtn")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "p.productTitle")
             set_name = self.get_set_name(card, "p.productTitle")
             price = self.get_price(card, "p.productPrice")
-            is_avail = self.get_availability(card, "span.addBtn")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -283,11 +293,13 @@ class GreyOgreGames(ScrapeMTG):
         card_divs = soup.select('div.collectionGrid div.productCard__card')
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "button.button--primary")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "p.productCard__title")
             set_name = self.get_set_name(card, "p.productCard__setName")
             price = self.get_price(card, "p.productCard__price")
-            is_avail = self.get_availability(card, "button.button--primary")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -311,11 +323,13 @@ class Hideout(ScrapeMTG):
         card_divs = soup.select('div.productCard__card')
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "button.button--primary")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "p.productCard__title")
             set_name = self.get_set_name(card, "p.productCard__setName")
             price = self.get_price(card, "p.productCard__price")
-            is_avail = self.get_availability(card, "button.button--primary")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
@@ -338,11 +352,13 @@ class MTGAsia(ScrapeMTG):
         card_divs = soup.select("div.products-display div.product-card-list2")
         cards = []
         for card in card_divs:
+            is_avail = self.get_availability(card, "a.nm-addToCart")
+            if not is_avail:
+                continue
             name = self.get_card_name(card, "div.grid-view-item__title")
             set_name = self.get_set_name(card, "div.grid-view-item__title")
             price = self.get_price(card, "span.product-price__price")
-            is_avail = self.get_availability(card, "a.nm-addToCart")
-            if name and price and set_name and is_avail:
+            if name and price and set_name:
                 cards.append({
                     "name": name,
                     "set_name": set_name,
