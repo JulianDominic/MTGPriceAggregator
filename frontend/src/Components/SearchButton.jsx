@@ -23,11 +23,13 @@ function SearchButton({ cardName, stores, setError, setCards, endpoint }) {
       setError([true, "Please select a store."])
       return false;
     }
-    setError([false, ""])
     return true;
   }
 
   const handleSearch = async () => {
+    // Initial state should clear all previous error messages, if any.
+    setError([false, ""]);
+
     if (!validInput()) {
       return;
     }
@@ -39,15 +41,24 @@ function SearchButton({ cardName, stores, setError, setCards, endpoint }) {
         cardName,
         stores: selectedStores
       });
+
+      const successfulResponse = response.data.success;
+      const errorMessage = response.data.errorMessage;
+      const cards = response.data.cards;
+
+      if (!successfulResponse) {
+        throw new Error(errorMessage)
+      }
+
       // Start sorting here because I have an initial state of putting them in an ascending order.
-      const sortedCards = response.data.sort((a, b) => {
+      const sortedCards = cards.sort((a, b) => {
         const priceA = parseFloat(a.price.replace(/[^0-9.-]+/g, ""));
         const priceB = parseFloat(b.price.replace(/[^0-9.-]+/g, ""));
         return priceA - priceB;
       });
       setCards(sortedCards);
     } catch (err) {
-      setError([true, "Failed to fetch cards from the server."]);
+      setError([true, err.message]);
     } finally {
       setLoading(false);
     }

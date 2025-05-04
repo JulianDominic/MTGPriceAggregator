@@ -10,6 +10,11 @@ class CardRequest(BaseModel):
     cardName: str
     stores: List[str]
 
+class APIResponse(BaseModel):
+    success: bool
+    errorMessage: str
+    cards: List[Dict[str, str]]
+
 app = FastAPI()
 
 origins = [
@@ -38,40 +43,70 @@ store_mapping = {
     "MTGAsia": MTGAsia
 }
 
-@app.post("/search", response_model=List[Dict[str, str]])
+async def get_cards(client, site_instance:ScrapeMTG):
+    print("Fetching for", site_instance.__class__.__name__)
+    success = await site_instance.fetch(client)
+    print("Finished fetching for", site_instance.__class__.__name__)
+    if not(success):
+        return None
+    return await site_instance.get_card_info()
+
+def validate_input(card_name: str, selected_stores: List[str]):
+    errorMessage = ""
+    if (card_name is None or not card_name):
+        errorMessage = "Card name is empty. Card name must be provided."
+    elif (selected_stores is None or not selected_stores):
+        errorMessage = "No store was selected. At least one store must be selected."
+    
+    if (errorMessage):
+        raise HTTPException(status_code=400, detail=errorMessage)
+
+
+@app.post("/search", response_model=APIResponse)
 async def search_card(card_request: CardRequest):
     card_name = card_request.cardName
     selected_stores = card_request.stores
-    
-    if not card_name:
-        raise HTTPException(status_code=400, detail="Card name must be provided")
-    
-    if not selected_stores:
-        raise HTTPException(status_code=400, detail="At least one store must be selected")
+
+    response = {
+        "success": True,
+        "errorMessage": "",
+        "cards": []
+    }
+
+    # Check for valid input
+    try:
+        validate_input(card_name, selected_stores)
+    except HTTPException as e:
+        response["success"] = False
+        response["errorMessage"] = e.detail
+        return response
 
     instances = [store_mapping[store](card_name) for store in selected_stores]
 
-    async def get_cards(client, site_instance:ScrapeMTG):
-        print("Fetching for", site_instance.__class__.__name__)
-        success = await site_instance.fetch(client)
-        print("Finished fetching for", site_instance.__class__.__name__)
-        if not(success):
-            return None
-        return await site_instance.get_card_info()
-    
+    results = None
     async with aiohttp.ClientSession() as client:
         all_store_cards = [get_cards(client, site_instance) for site_instance in instances]
         results = await asyncio.gather(*all_store_cards)
     
+    # Check if there was some kind of server error
+    if (results is None):
+        response["success"] = False
+        response["errorMessage"] = "Some internal server error occured"
+        return response
+
     all_cards = []
     for result in results:
         if result is not None:
             all_cards.extend(result)
 
-    if not all_cards:
-        raise HTTPException(status_code=404, detail="No cards found")
+    # Check if there was any card found at all
+    if (not all_cards):
+        response["success"] = False
+        response["errorMessage"] = f"\"{card_name}\" is not available in any of the stores selected."
+    else:
+        response["cards"] = all_cards
 
-    return all_cards
+    return response
 
 if __name__ == '__main__':
     import uvicorn
