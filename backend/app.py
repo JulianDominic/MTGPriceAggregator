@@ -1,6 +1,7 @@
 import aiohttp
 import asyncio
 import requests, json, os
+from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -12,12 +13,16 @@ class CardRequest(BaseModel):
     cardName: str
     stores: List[str]
 
+class UpdateRequest(BaseModel):
+    force: bool
+
 class APIResponse(BaseModel):
     success: bool
     errorMessage: str
     cards: List[Dict[str, str]]
 
-MASTER_CARD_LIST = "../assets/scryfall_card_names.json"
+MASTER_CARD_LIST = "scryfall_card_names.json"
+CACHE_DURATION = timedelta(hours=24)
 
 app = FastAPI()
 
@@ -65,9 +70,20 @@ def validate_input(card_name: str, selected_stores: List[str]):
     if (errorMessage):
         raise HTTPException(status_code=400, detail=errorMessage)
 
+def is_valid_cache() -> bool:
+    if not os.path.exists(MASTER_CARD_LIST):
+        return False
+    modified_time = datetime.fromtimestamp(os.path.getmtime(MASTER_CARD_LIST))
+    return datetime.now() - modified_time < CACHE_DURATION
 
-@app.get("/all_cards")
-async def get_all_cards():
+@app.post("/all-cards")
+async def get_all_cards(update_request: UpdateRequest):
+    if (not update_request.force and is_valid_cache()):
+        print("Local file found.")
+        with open(MASTER_CARD_LIST, "r", encoding="utf-8") as file:
+            card_names = json.load(file)
+            return JSONResponse(content={"card_names": card_names})
+    print("Pulling cards from Scryfall API")
     try:
         response = requests.get("https://api.scryfall.com/catalog/card-names", timeout=10)
         response.raise_for_status()
