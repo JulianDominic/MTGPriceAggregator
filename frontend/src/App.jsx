@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as data from './stores.json'
-import * as mCardList from "../../assets/scryfall_card_names.json"
 import { Button, Container, CircularProgress, Typography } from "@mui/material";
 import SearchBar from "./Components/SearchBar";
 import SearchButton from "./Components/SearchButton";
@@ -17,7 +16,7 @@ const intialSelection = stores.reduce((acc, store) => {
 }, {});
 // FastAPI Backend Endpoint
 const searchEndpoint = "http://localhost:10016/search"
-const cardListEndpoint = "http://localhost:10016/all_cards"
+const cardListEndpoint = "http://localhost:10016/all-cards"
 
 function App() {
   const [cardName, setCardName] = useState('');
@@ -28,24 +27,27 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadMasterCardList();
+    handlePullingCards(false);
   }, []);
 
-  const loadMasterCardList = async () => {
-    // console.log(mCardList);
-    setMasterCardList(mCardList.default);
+  const handleUpdateClick = async () => {
+    handlePullingCards(true)
   }
 
-  const handlePullingCards = async () => {
+  const handlePullingCards = async (force) => {
+    console.log(force);
     try {
       setLoading(true)
-      const response = await axios.get(
-        cardListEndpoint
+      const response = await axios.post(
+        cardListEndpoint,
+        {
+          force
+        }
       )
       // console.log(response)
       if (response.data.card_names) {
         setMasterCardList(response.data.card_names);
-        console.log("Successfully pulled card names from Scryfall")
+        console.log("Successfully pulled card names from Scryfall/Backend")
       }
     } catch (err) {
       console.log(err)
@@ -77,7 +79,7 @@ function App() {
         </Typography>
         <Button
           variant="contained"
-          onClick={handlePullingCards}
+          onClick={handleUpdateClick}
           disabled={loading}
           color="success"
         >
