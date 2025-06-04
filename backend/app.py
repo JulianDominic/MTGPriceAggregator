@@ -1,7 +1,9 @@
 import aiohttp
 import asyncio
+import requests, json, os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Dict
 from lgs import GamesHaven, OneMTG, AgoraHobby, FlagshipGames, CardsCitadel, GreyOgreGames, Hideout, ScrapeMTG, MTGAsia
@@ -14,6 +16,8 @@ class APIResponse(BaseModel):
     success: bool
     errorMessage: str
     cards: List[Dict[str, str]]
+
+MASTER_CARD_LIST = "../assets/scryfall_card_names.json"
 
 app = FastAPI()
 
@@ -61,6 +65,26 @@ def validate_input(card_name: str, selected_stores: List[str]):
     if (errorMessage):
         raise HTTPException(status_code=400, detail=errorMessage)
 
+
+@app.get("/all_cards")
+async def get_all_cards():
+    try:
+        response = requests.get("https://api.scryfall.com/catalog/card-names", timeout=10)
+        response.raise_for_status()
+        scryfall_data:dict = response.json()
+        card_names = scryfall_data.get("data", [])
+        # Save only the card names (not full metadata)
+        if (os.path.exists(MASTER_CARD_LIST)):
+            os.remove(MASTER_CARD_LIST)
+        with open(MASTER_CARD_LIST, "w", encoding="utf-8") as f:
+            json.dump(card_names, f)
+        return JSONResponse(content={"card_names": card_names})
+
+    except requests.RequestException as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Failed to fetch from Scryfall", "details": str(e)}
+        )
 
 @app.post("/search", response_model=APIResponse)
 async def search_card(card_request: CardRequest):
