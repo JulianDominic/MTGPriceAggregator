@@ -72,10 +72,10 @@ This is my first actual full-stack web application. I saw that there was no way 
 
 - [x] Make the cards in the frontend clickable so that it redirects to the query page (not the specific card). 
 - [x] Add the query link to the script output if it doesn't look too ugly.
-- [ ] Add autocomplete when typing a card
+- [x] Add autocomplete when typing a card
 - [ ] Add Card Validation 1 (Valid card name)
 - [ ] Add Card Validation 2 (Valid set)
-- [ ] Change HTTP response to provide better error codes to frontend
+- [x] Change HTTP response to provide better error codes to frontend
 - [ ] Add a button to export a csv based on the cards chosen. It should contain (card name, store, price, link to query).
 - [ ] Find a better way to add the host machine's IP for the web app.
 - [ ] Improve the design???
