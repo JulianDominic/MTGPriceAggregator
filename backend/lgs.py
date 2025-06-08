@@ -87,7 +87,13 @@ class ScrapeMTG(ABC):
         lgs = self.__class__.__name__
         if lgs in [LGS.OneMTG.value, LGS.FlagshipGames.value, LGS.MTGAsia.value, LGS.CardsCitadel.value]:
             # Card Name (AA/Showcase/etc) [SET NAME]
-            set_name = set_name.split('[')[1][:-1]
+            set_name = set_name.split('[')
+            # I'm hoping that the "card" isn't a card, otherwise, it shouldn't encounter this block.
+            if (len(set_name) < 2):
+                print("!!!ERROR: Failed to parse: ")
+                print(set_name)
+                return ""
+            set_name = set_name[1][:-1]
         elif lgs in [LGS.AgoraHobby.value]:
             # [SET NAME] RARITY - CONDITION
             set_name = set_name.split()[0].strip()[1:-1]
