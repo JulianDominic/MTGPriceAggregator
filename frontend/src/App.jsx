@@ -15,8 +15,9 @@ const intialSelection = stores.reduce((acc, store) => {
   return acc;
 }, {});
 // FastAPI Backend Endpoint
-const searchEndpoint = "http://localhost:10016/search"
-const cardListEndpoint = "http://localhost:10016/all-cards"
+const HOST_IP = import.meta.env.VITE_HOST_IP || "localhost";
+const searchEndpoint   = "http://" + HOST_IP + ":10016/search"
+const cardListEndpoint = "http://" + HOST_IP + ":10016/all-cards"
 
 function App() {
   const [cardName, setCardName] = useState('');
