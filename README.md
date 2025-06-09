@@ -41,11 +41,8 @@ This app was made to be run on your localhost, so change all of the necessary en
 
 1. Docker must be installed
 2. Clone/Download the repository
-3. Install the dependencies; Backend: `cd backend && pip install -r requirements_app.txt`. Frontend: `cd frontend && npm install`
-4. Change `localhost` found in `frontend/src/App.jsx` to the host machine's IP, if applicable.
-5. Change all instances of `YOUR_IP` found in `docker-compose.yml` to the host machine's IP.
-6. At the root directory, run `docker compose build --no-cache && docker compose up -d`
-7. Access the frontend at `http://YOUR_IP:10015/`
+3. In the `.env` file, replace `YOUR_IP` with the IP address of the host machine.
+4. At the root directory, run `docker compose build --no-cache && docker compose up -d`
 
 #### Manual
 
@@ -77,6 +74,6 @@ This is my first actual full-stack web application. I saw that there was no way 
 - [ ] Add Card Validation 2 (Valid set)
 - [x] Change HTTP response to provide better error codes to frontend
 - [ ] Add a button to export a csv based on the cards chosen. It should contain (card name, store, price, link to query).
-- [ ] Find a better way to add the host machine's IP for the web app.
+- [x] Find a better way to add the host machine's IP for the web app.
 - [ ] Improve the design???
 - [ ] Capture history of cards searched and cache results???
