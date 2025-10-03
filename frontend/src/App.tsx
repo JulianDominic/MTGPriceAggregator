@@ -15,8 +15,8 @@ function App() {
   return (
     <>
       <Header />
-      <div className="grid sm: grid-cols-1 md:grid-cols-3 gap-4 p-4">
-        {cards.map((card) => <ProductCard card={card}/>)}
+      <div className="grid sm:grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+        {cards && cards.map((card, index) => <ProductCard key={index} card={card}/>)}
       </div>
     </>
   )
