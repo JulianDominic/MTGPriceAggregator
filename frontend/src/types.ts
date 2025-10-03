@@ -5,3 +5,7 @@ export interface MTGCard {
   store: string,
   url: URL
 };
+
+interface CardName { id: number, name: string };
+
+export type MasterCardList = CardName[];

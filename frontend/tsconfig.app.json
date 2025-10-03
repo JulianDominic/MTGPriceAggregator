@@ -11,7 +11,8 @@
     "paths": {
       "@/*": [
         "./src/*",
-        "./src/components/*"
+        "./src/components/*",
+        "./src/components/ui/*"
       ]
     },
 

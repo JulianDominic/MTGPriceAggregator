@@ -11,7 +11,7 @@ const ProductCard = ({ card } : { card : MTGCard }) => {
       <CardContent>
         <CardDescription>Set: {card.set_name}</CardDescription>
         <CardDescription>Store: {card.store}</CardDescription>
-        <p>Price: ${card.price.toFixed(2)}</p>
+        <p>Price: ${card.price}</p>
       </CardContent>
       <CardFooter>
         <Button className="w-full" onClick={() => {window.open(card.url, "_blank")}}>
