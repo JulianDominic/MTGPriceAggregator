@@ -9,3 +9,7 @@ export interface MTGCard {
 interface CardName { id: number, name: string };
 
 export type MasterCardList = CardName[];
+
+export type StoreSelection = {
+  [key: string]: Boolean
+};

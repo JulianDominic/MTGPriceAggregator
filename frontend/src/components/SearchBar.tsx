@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { MasterCardList, MTGCard } from '@/types';
+import { MasterCardList, MTGCard, StoreSelection } from '@/types';
 import { Button } from './ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { searchStores } from '@/api/client';
 
-const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardList : MasterCardList, selectedStores : string[], setCards : React.Dispatch<React.SetStateAction<MTGCard[]>> }) => {
+const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardList : MasterCardList, selectedStores : StoreSelection, setCards : React.Dispatch<React.SetStateAction<MTGCard[]>> }) => {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,20 @@ const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardLi
   const handleSearch = async () => {
     setIsLoading(true);
     try {
-      const cards = await searchStores(inputValue, selectedStores);
+      if (!inputValue) {
+        throw new Error("Card name field cannot be empty.");
+      }
+      let count = 0;
+      for (const store in selectedStores) {
+        if (!selectedStores[store]) {
+          count++;
+        }
+      }
+      if (count === Object.keys(selectedStores).length) {
+        throw new Error("At least one store must be selected");
+      }
+
+      const cards = await searchStores(inputValue, Object.keys(selectedStores));
       setCards(cards);
     } catch (err) {
       toast.error("Failed to get cards");
