@@ -1,15 +1,12 @@
-from litestar import Controller, get, post, put, patch, delete
-from litestar.dto import DTOData
+from litestar import Controller, get
 from litestar.exceptions import HTTPException
-from models import SearchRequest, SearchResponse
+from models import SearchResponse
 from service import SearchService
 from typing import List
 
 class SearchController(Controller):
     path = "/search"
-    
-    def __init__(self):
-        self.search_service = SearchService()
+    search_service = SearchService()
     
     @get(path="/")
     async def search(self, card_name:str, stores:List[str]) -> SearchResponse:
