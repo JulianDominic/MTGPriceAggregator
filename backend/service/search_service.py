@@ -39,7 +39,7 @@ class SearchService():
             all_store_cards = [self.get_cards(client, site_instance) for site_instance in instances]
             results = await asyncio.gather(*all_store_cards)
         
-        if (result is None):
+        if (results is None):
             raise Exception("Internal Server Error")
         
         all_cards = []

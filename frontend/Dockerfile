@@ -1,13 +1,11 @@
-FROM node:22-alpine3.19
-
+FROM node:current-alpine AS build-stage
 WORKDIR /frontend
+COPY /frontend/ ./
+RUN npm ci 
+RUN npm run build 
 
-ENV PATH /frontend/node_modules/.bin:$PATH
-
-COPY /frontend/package.json ./
-COPY /frontend/package-lock.json ./
-RUN npm ci
-
-COPY /frontend ./
-
-CMD ["npm", "run", "dev"]
+FROM nginx:stable-alpine AS production-stage
+VOLUME /var/log/nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /frontend/dist /usr/share/nginx/html
+EXPOSE 80
