@@ -11,10 +11,10 @@ services:
     container_name: MTGPA-Frontend
     build:
       dockerfile: ./frontend/Dockerfile
+      args:
+        - VITE_HOST_IP=${HOST_IP}
     ports:
       - "${HOST_IP}:10015:80"
-    environment:
-      - VITE_HOST_IP=${HOST_IP}
     networks:
       MTGPA:
         ipv4_address: 172.20.0.2
@@ -26,6 +26,8 @@ services:
       dockerfile: ./backend/Dockerfile
     ports:
       - "${HOST_IP}:10016:10016"
+    environment:
+      - HOST_IP=${HOST_IP}
     networks:
       MTGPA:
         ipv4_address: 172.20.0.3

@@ -1,4 +1,11 @@
 FROM node:current-alpine AS build-stage
+
+# https://stackoverflow.com/a/77490465
+# Define build arguments for environment variables
+ARG VITE_HOST_IP
+# Set environment variables during the build process
+ENV VITE_HOST_IP=$VITE_HOST_IP
+
 WORKDIR /frontend
 COPY /frontend/ ./
 RUN npm ci 
