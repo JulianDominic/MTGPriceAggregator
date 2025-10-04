@@ -75,5 +75,5 @@ This is my first actual full-stack web application. I saw that there was no way 
 - [x] Change HTTP response to provide better error codes to frontend
 - [ ] Add a button to export a csv based on the cards chosen. It should contain (card name, store, price, link to query).
 - [x] Find a better way to add the host machine's IP for the web app.
-- [ ] Improve the design???
+- [x] Improve the design???
 - [ ] Capture history of cards searched and cache results???

@@ -13,9 +13,6 @@ class CardRequest(BaseModel):
     cardName: str
     stores: List[str]
 
-class UpdateRequest(BaseModel):
-    force: bool
-
 class APIResponse(BaseModel):
     success: bool
     errorMessage: str
@@ -76,9 +73,9 @@ def is_valid_cache() -> bool:
     modified_time = datetime.fromtimestamp(os.path.getmtime(MASTER_CARD_LIST))
     return datetime.now() - modified_time < CACHE_DURATION
 
-@app.post("/all-cards")
-async def get_all_cards(update_request: UpdateRequest):
-    if (not update_request.force and is_valid_cache()):
+@app.get("/cards/all")
+async def get_all_cards(force: bool):
+    if (not force and is_valid_cache()):
         print("Local file found.")
         with open(MASTER_CARD_LIST, "r", encoding="utf-8") as file:
             card_names = json.load(file)
@@ -88,7 +85,13 @@ async def get_all_cards(update_request: UpdateRequest):
         response = requests.get("https://api.scryfall.com/catalog/card-names", timeout=10)
         response.raise_for_status()
         scryfall_data:dict = response.json()
-        card_names = scryfall_data.get("data", [])
+        temp_card_names = scryfall_data.get("data", [])
+        card_names = []
+        for idx, card_name in enumerate(temp_card_names):
+            card_names.append({
+                "id": idx,
+                "name": card_name,
+            })
         # Save only the card names (not full metadata)
         if (os.path.exists(MASTER_CARD_LIST)):
             os.remove(MASTER_CARD_LIST)
