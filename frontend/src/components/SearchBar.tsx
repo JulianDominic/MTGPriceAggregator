@@ -66,7 +66,7 @@ const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardLi
   };
 
   return (
-    <div className="w-full p-4 flex items-center space-x-6">
+    <div className="w-full p-4 flex items-start space-x-6">
       <Command className="rounded-lg border max-h-50">
         <CommandInput
           id="card-name"
@@ -99,9 +99,11 @@ const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardLi
           </CommandList>
         )}
       </Command>
-      <Button className="top-full" onClick={handleSearch}>
-        {isLoading ? <LoaderCircle className="animate-spin w-12 h-12" /> : "Search"}
-      </Button>
+      <div>
+        <Button className="top-full" onClick={handleSearch}>
+          {isLoading ? <LoaderCircle className="animate-spin w-12 h-12" /> : "Search"}
+        </Button>
+      </div>
     </div>
   );
 }

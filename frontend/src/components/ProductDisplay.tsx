@@ -34,8 +34,8 @@ const ProductDisplay = ({ cards }: { cards: MTGCard[] }) => {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="asc">Ascending ($ to $$$)</SelectItem>
-            <SelectItem value="desc">Descending ($$$ to $)</SelectItem>
+            <SelectItem value="asc">Asc ($ to $$$)</SelectItem>
+            <SelectItem value="desc">Desc ($$$ to $)</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
