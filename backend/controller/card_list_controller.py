@@ -10,7 +10,7 @@ class CardListController(Controller):
     @get(path="/all")
     async def get_all_cards(self, force: bool) -> CardListResponse:
         try:
-            card_names = self.card_list_service.get_card_list(force)
+            card_names = await self.card_list_service.get_card_list(force)
             return CardListResponse(card_names=card_names)
         
         except Exception as e:

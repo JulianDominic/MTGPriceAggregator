@@ -26,7 +26,7 @@ class CardListService():
             response.raise_for_status()
             scryfall_data:dict = response.json()
             temp_card_names = scryfall_data.get("data", [])
-            card_names = []
+            card_names:List[CardListItem] = []
             for idx, card_name in enumerate(temp_card_names):
                 card_list_item = CardListItem(
                     id=idx,
@@ -37,8 +37,8 @@ class CardListService():
             if (os.path.exists(MASTER_CARD_LIST_PATH)):
                 os.remove(MASTER_CARD_LIST_PATH)
             with open(MASTER_CARD_LIST_PATH, "w", encoding="utf-8") as f:
-                json.dump(card_names, f)
+                json.dump([item.model_dump() for item in card_names], f)
             return card_names
 
-        except requests.RequestException:
+        except requests.RequestException as e:
             raise Exception("Failed to fetch from Scryfall")
