@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner"
@@ -8,7 +8,7 @@ import { getMasterCardList } from "@/api/client";
 const UpdateCards = ({ setMasterCardList } : { setMasterCardList : React.Dispatch<React.SetStateAction<MasterCardList>> }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const updateCardList = async (force : Boolean) => {
+  const updateCardList = useCallback(async (force: boolean) => {
     setIsLoading(true);
     try {
       const masterCardList = await getMasterCardList(force);
@@ -18,11 +18,11 @@ const UpdateCards = ({ setMasterCardList } : { setMasterCardList : React.Dispatc
       console.error(err);
     }
     setIsLoading(false);
-  };
+  }, [setMasterCardList]);
 
   useEffect(() => {
     updateCardList(false);
-  }, []);
+  }, [updateCardList]);
 
   const handleClick = async () => {
     await updateCardList(true);
