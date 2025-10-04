@@ -12,7 +12,7 @@ services:
     build:
       dockerfile: ./frontend/Dockerfile
     ports:
-      - "${HOST_IP}:10015:10015"
+      - "${HOST_IP}:10015:80"
     environment:
       - VITE_HOST_IP=${HOST_IP}
     networks:
