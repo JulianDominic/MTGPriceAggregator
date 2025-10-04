@@ -14,7 +14,7 @@ const StoreSelect = ({ selectedStores, setSelectedStores } : { selectedStores : 
   };
   
   return (
-    <div className="grid grid-cols-2 gap-4 md:flex md:flex-row md:items-center md:space-x-4 p-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:flex lg:flex-row lg:items-center lg:space-x-4 p-4">
       {Object.keys(selectedStores).map((store) => {
         return (
           <div key={store} className="flex items-center gap-3">
