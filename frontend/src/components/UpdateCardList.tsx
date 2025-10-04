@@ -4,6 +4,7 @@ import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner"
 import { MasterCardList } from "@/types";
 import { getMasterCardList } from "@/api/client";
+import { getErrorMessage } from "@/lib/utils";
 
 const UpdateCards = ({ setMasterCardList } : { setMasterCardList : React.Dispatch<React.SetStateAction<MasterCardList>> }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,8 +15,9 @@ const UpdateCards = ({ setMasterCardList } : { setMasterCardList : React.Dispatc
       const masterCardList = await getMasterCardList(force);
       setMasterCardList(masterCardList);
     } catch (err) {
-      toast.error("Failed to update card list");
-      console.error(err);
+      const errorMsg = getErrorMessage(err);
+      toast.error(errorMsg);
+      console.error(errorMsg);
     }
     setIsLoading(false);
   }, [setMasterCardList]);

@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { searchStores } from '@/api/client';
+import { getErrorMessage } from '@/lib/utils';
 
 const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardList : MasterCardList, selectedStores : StoreSelection, setCards : React.Dispatch<React.SetStateAction<MTGCard[]>> }) => {
   const [open, setOpen] = useState(false);
@@ -57,8 +58,9 @@ const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardLi
       const cards = await searchStores(inputValue, Object.keys(selectedStores));
       setCards(cards);
     } catch (err) {
-      toast.error("Failed to get cards");
-      console.error(err);
+      const errorMsg = getErrorMessage(err);
+      toast.error(errorMsg);
+      console.error(errorMsg);
     }
     setIsLoading(false);
   };
