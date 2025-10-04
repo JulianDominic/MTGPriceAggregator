@@ -21,7 +21,7 @@ class SearchController(Controller):
             
         all_cards = []
         try:
-            all_cards = self.search_service.get_prices(card_name, stores)
+            all_cards = await self.search_service.get_prices(card_name, stores)
             return SearchResponse(
                 cards=all_cards
             )

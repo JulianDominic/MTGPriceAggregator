@@ -23,7 +23,7 @@ class SearchService():
             raise Exception("No store was selected. At least one store must be selected.")
             
         
-    async def get_cards(client, site_instance:ScrapeMTG):
+    async def get_cards(self, client, site_instance:ScrapeMTG):
         print("Fetching for", site_instance.__class__.__name__)
         success = await site_instance.fetch(client)
         print("Finished fetching for", site_instance.__class__.__name__)
