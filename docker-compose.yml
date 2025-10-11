@@ -1,10 +1,6 @@
 networks:
   MTGPA:
-    name: MTGPA
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
-          gateway: 172.20.0.1
+    driver: bridge
 
 services:
   frontend:
@@ -16,8 +12,7 @@ services:
     ports:
       - "${HOST_IP}:10015:80"
     networks:
-      MTGPA:
-        ipv4_address: 172.20.0.2
+      - MTGPA
     restart: always
 
   backend:
@@ -29,6 +24,5 @@ services:
     environment:
       - HOST_IP=${HOST_IP}
     networks:
-      MTGPA:
-        ipv4_address: 172.20.0.3
+      - MTGPA
     restart: always
