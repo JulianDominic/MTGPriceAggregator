@@ -56,6 +56,9 @@ const SearchBar = ({ masterCardList, selectedStores, setCards } : { masterCardLi
       }
 
       const cards = await searchStores(inputValue, Object.keys(selectedStores));
+      if (cards.length == 0) {
+        throw new Error("The card could not be found in any of the selected store(s)!");
+      }
       setCards(cards);
     } catch (err) {
       const errorMsg = getErrorMessage(err);
