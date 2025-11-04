@@ -1,5 +1,5 @@
 // const BACKEND_IP = import.meta.env.VITE_HOST_IP || "localhost";
-export const BACKEND_URL = `http://backend:10016`;
+export const BACKEND_URL = "/api/v1";
 
 export const getMasterCardList = async (force : boolean) => {
   const response = await fetch(`${BACKEND_URL}/cards/all?force=${force}`);

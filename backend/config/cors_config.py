@@ -1,7 +1,7 @@
 import os
 from litestar.config.cors import CORSConfig
 
-HOST_IP = os.environ.get("HOST_IP", "localhost")
+# HOST_IP = os.environ.get("HOST_IP", "localhost")
 FRONTEND_URL = f"http://frontend:10015"
 ORIGINS = [FRONTEND_URL, "http://localhost:10015"]
 HEADERS = [
