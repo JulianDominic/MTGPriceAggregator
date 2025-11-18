@@ -1,4 +1,11 @@
 # MTG Price Aggregator
+
+When I started this project, I could not find any other application that would help me aggregate all of the prices available from local game stores. Also, it was a learning opportunity for me to learn about Full Stack development.
+
+I have recently found [Gishath Fetch](https://gishathfetch.com/) which started roughly during the same time as I started this project. It supports a lot more features and stores than I do. Please do check it out, the [repository is here](https://github.com/xenodus/gishathfetch).
+
+Therefore, until further notice, this project will be on a hiatus.
+
 - [MTG Price Aggregator](#mtg-price-aggregator)
   - [Usage](#usage)
     - [Web App](#web-app)
